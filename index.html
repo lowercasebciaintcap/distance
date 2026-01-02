@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Distance Guess Game</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      background-color: #ffe6f0;
+      color: #d63384;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+    }
+
+    .options button {
+      background-color: #ffb6c1;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1.2em;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    .options button:hover {
+      transform: scale(1.1);
+      background-color: #ff8fb1;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.5em;
+      min-height: 1.5em;
+    }
+
+    #mapContainer {
+      margin-top: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    #mapImage {
+      max-width: 90%;
+      border-radius: 20px;
+      display: none;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    /* Heart animation */
+    .heart {
+      position: absolute;
+      font-size: 2em;
+      color: #ff6b81;
+      animation: floatUp 1.5s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-80px) scale(1.5); opacity: 0; }
+    }
+
+    #times {
+      margin-top: 15px;
+      font-size: 1.2em;
+      display: none;
+      background-color: #ffd6e8;
+      padding: 10px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Guess the Distance from Houston, TX to Markham, ON!</h1>
+  <p>Choose the correct distance:</p>
+
+  <div class="options">
+    <button onclick="checkAnswer(1000)">1000 miles</button>
+    <button onclick="checkAnswer(1500)">1500 miles</button>
+    <button onclick="checkAnswer(2000)">2000 miles</button>
+    <button onclick="checkAnswer(2500)">2500 miles</button>
+  </div>
+
+  <div id="result"></div>
+
+  <div id="mapContainer">
+    <img id="mapImage" src="/mnt/data/An_infographic-style_digital_illustration_depicts_.png" alt="Houston to Markham Map">
+  </div>
+
+  <div id="times">
+    <p>Walking: 27 Days 💖</p>
+    <p>Driving: 24 Hours 🚗</p>
+    <p>Flying: 3 Hours ✈️</p>
+  </div>
+
+  <script>
+    function checkAnswer(distance) {
+      const correctDistance = 1500;
+      const resultDiv = document.getElementById('result');
+      const mapImage = document.getElementById('mapImage');
+      const mapContainer = document.getElementById('mapContainer');
+      const timesDiv = document.getElementById('times');
+
+      // Remove previous hearts
+      const oldHearts = document.querySelectorAll('.heart');
+      oldHearts.forEach(h => h.remove());
+
+      if(distance === correctDistance) {
+        resultDiv.innerHTML = "yay! you got it right! 💖";
+
+        // Show map with fade-in
+        mapImage.style.display = "block";
+        setTimeout(() => mapImage.style.opacity = 1, 50);
+
+        // Show times
+        timesDiv.style.display = "inline-block";
+
+        // Spawn heart animation
+        for(let i=0; i<5; i++) {
+          const heart = document.createElement('div');
+          heart.className = 'heart';
+          heart.style.left = (50 + Math.random()*100 - 50) + '%';
+          heart.style.top = (50 + Math.random()*50 - 25) + '%';
+          heart.innerHTML = '💖';
+          mapContainer.appendChild(heart);
+          setTimeout(() => heart.remove(), 1500);
+        }
+
+      } else {
+        resultDiv.innerHTML = "nawwww 💔 Try again!";
+        mapImage.style.opacity = 0;
+        setTimeout(() => mapImage.style.display = "none", 500);
+        timesDiv.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
